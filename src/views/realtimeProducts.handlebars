@@ -1,0 +1,79 @@
+<h2>Products</h2>
+
+<h3>Add a Product</h3>
+<a href="/products">Products List</a>
+
+<form id="myForm">
+    Title: <input type="text" name="title" id="title">
+    <br>
+    Description: <input type="text" name="description" id="description">
+    <br>
+    Code: <input type="text" name="code" id="code">
+    <br>
+    Price: <input type="number" name="price" id="price">
+    <br>
+    Stock: <input type="number" name="stock" id="stock">
+    <br>
+    Category: <input type="text" name="category" id="category">
+    <br>
+    Thumbnail: <input type="text" name="thumbnail" id="thumbnail">
+    <br>
+    <button type="submit">Enviar</button>
+</form>
+
+<hr>
+
+<table border="1" class="table">
+    <thead>
+        <tr>
+            <th scope = "col">Name</th>
+            <th scope = "col">ID</th>
+            <th scope = "col">Price</th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+        {{#each products}}
+        <tr>
+            <th scope="row">{{this.id}}</th>
+            <td>{{this.title}}</td>
+            <td>{{this.price}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    myForm.onsubmit = (e) => {
+        e.preventDefault();
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const code = document.getElementById('code').value;
+        const price = document.getElementById('price').value;
+        const stock = document.getElementById('stock').value;
+        const category = document.getElementById('category').value;
+        const thumbnail = document.getElementById('thumbnail').value;
+
+        const product = {
+            title, description, code, price, stock, category, thumbnail,
+        };
+
+        socket.emit('new-product', product);
+    }
+
+    socket.on('reload-table', products =>{
+        const tbody = document.getElementById('tbody');
+
+        let html = '';
+        products.forEach( product => {
+            html += `<tr>
+            <th scope="row">${product.id}</td>
+            <td>${product.title}</td>
+            <td>${product.price}</td>
+            </tr>`
+        });
+        table.innerHTML = html;
+    });
+
+</script>
