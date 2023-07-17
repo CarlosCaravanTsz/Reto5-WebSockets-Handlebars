@@ -56,7 +56,7 @@
     </thead>
     <tbody id="tbody">
         {{#each products}}
-        <tr>
+        <tr id="item-{{this.id}}">
             <th scope="row" class="id_prod">{{this.id}}</th>
             <td>{{this.title}}</td>
             <td>{{this.price}}</td>
@@ -65,7 +65,7 @@
                     <ion-icon name="create-outline"></ion-icon>
                 </span>
             </button></td>
-            <td class={{this.id}}><button type="button" class="btn delete">
+            <td ><button type="button" class="btn delete">
                 <span class="button__icon">
                     <ion-icon name="trash-sharp" ></ion-icon>
                 </span>

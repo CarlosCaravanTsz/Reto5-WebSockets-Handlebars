@@ -6,5 +6,5 @@ catalog.addEventListener('click', (e) => {
 
 edit_catalog.addEventListener('click', (e) => {
     e.preventDefault();
-    location.href = '/edit_products'
+    location.href = '/edit-products'
 })
