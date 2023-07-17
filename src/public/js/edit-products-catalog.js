@@ -34,24 +34,26 @@ myForm.onsubmit = (e) => {
   socket.emit("operation", product);
 };
 
-// Update Form Appears Click
-const btnUpdates = Array.from(document.getElementsByClassName("edit"));
-let id_input = document.getElementById("id_edit_form");
-
-btnUpdates.forEach((b_edit) => {
-  b_edit.addEventListener("click", (e) => {
-    if (edit_form.style.display === "none") {
-      edit_form.style.display = "block";
-    } else {
-      edit_form.style.display = "none";
-    }
-    let id = parseInt(e.target.closest("td").className);
-    id_input.value = id;
-    id_input.readOnly = true;
-  });
-});
 
 function load_buttons() {
+
+  // Update Form Appears Click
+  const btnUpdates = Array.from(document.getElementsByClassName("edit"));
+  let id_input = document.getElementById("id_edit_form");
+
+  btnUpdates.forEach((b_edit) => {
+    b_edit.addEventListener("click", (e) => {
+      if (edit_form.style.display === "none") {
+        edit_form.style.display = "block";
+      } else {
+        edit_form.style.display = "none";
+      }
+      let id = parseInt(e.target.closest("tr").id.slice(5));
+      id_input.value = id;
+      id_input.readOnly = true;
+    });
+  });
+
   // Update Product
   edit_form.onsubmit = (e) => {
     e.preventDefault();
@@ -74,12 +76,12 @@ function load_buttons() {
 
   // Delete Product Event:
   const btnDeletes = Array.from(document.getElementsByClassName("delete"));
-    console.log(btnDeletes);
+  console.log(btnDeletes);
   btnDeletes.forEach((b_delete) => {
     b_delete.addEventListener("click", (e) => {
       e.preventDefault();
       let obj = {
-        id: parseInt(e.target.closest("tr").id), //formatear
+        id: parseInt(e.target.closest("tr").id.slice(5)),
         operation: "delete",
       };
       socket.emit("operation", obj);
@@ -89,6 +91,7 @@ function load_buttons() {
 
 load_buttons();
 
+// Socket Operation
 socket.on("reload-table", (products) => {
   const tbody = document.getElementById("tbody");
   let html = "";
