@@ -23,21 +23,43 @@ app.use(express.json()); // para leer desde req.body
 
 // METODOS HTTPS
 app.use('/', viewsRouter);
-//app.use('/api/products', productRouter);
-//app.use('/api/carts', cartRouter);
 
 
 // SOCKET IO
 const httpServer = app.listen(8080, () => console.log('Listening on port 8080...'));
 const io = new Server(httpServer);
 
-io.on('connection', socket => {
-    io.on('new-product', async (data) => {
-        const productManager = new ProductManager();
-        await productManager.addProduct(data);
 
-        const products = await productManager.get();
-        socket.emit('reload-table', products);
+// io socket for CRUD operations
+io.on('connection', socket => {
+
+    socket.on('operation', async (data) => {
+        const productManager = new ProductManager();
+        const { operation } = data;
+        delete data.operation;
+        console.log('PRODUCTO RECIBIDO TESTING: ', data);
+
+        if (operation == "add") {
+            await productManager.addProduct(data);
+            const products = await productManager.get();
+            socket.emit('reload-table', products);
+
+        } else if (operation == 'update') {
+            await productManager.updateProduct(data.id, data);
+            const products = await productManager.get();
+            socket.emit('reload-table', products);
+
+        } else if (operation == 'delete') {
+            await productManager.deleteProduct(data.id);
+            const products = await productManager.get();
+            socket.emit('reload-table', products);
+        
+        } else {
+            console.log({ status: 'ERROR: Operacion no encontrada' });
+        }
+
+
+
     });
 
 });

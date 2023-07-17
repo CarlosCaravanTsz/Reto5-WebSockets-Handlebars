@@ -4,36 +4,38 @@ import ProductManager from '../manager/product.manager.js';
 const router = Router();
 const productManager = new ProductManager();
 
+// Landing Page OK
 router.get('/', (req, res) => {
     res.render('index', {});
 });
 
-
-//GET PRODUCTS
+// Products Catalog OK
 router.get('/products', async (req, res) => {
     const products = await productManager.get();
-    res.render('products', { products })
+    res.render('products_catalog', { products })
 });
 
-// GET-ADD PRODUCTS REALTIME
-router.get('/products-realtime', async (req, res) => {
+
+// Edit Product Catalog OK
+router.get('/edit-products', async (req, res) => {
     const products = await productManager.get();
-    res.render('realtimeProducts', { products })
+    res.render('edit_products', { products })
 });
 
-
-// ADD PRODUCTS
-router.get('/form-products', async (req, res) => {
-    res.render('form', {})
-});
-
+// ADD PRODUCT
 router.post('/form-products', async (req, res) => {
     const data = req.body;
     const result = await productManager.addProduct(data);
     console.log(result);
 
-
     res.redirect('/products');
+});
+
+
+// GET-ADD PRODUCTS REALTIME
+router.get('/products-realtime', async (req, res) => {
+    const products = await productManager.get();
+    res.render('realtimeProducts', { products })
 });
 
 

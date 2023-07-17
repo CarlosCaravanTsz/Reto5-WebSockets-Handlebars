@@ -17,12 +17,12 @@ class FileManager {
             data = data.filter((p) => p.status == true);
         }
 
+        console.log(data);
+
         if (limit){
             const elements = l > limit ? data.slice(0, limit) : data;
-            console.log(elements);
             return elements;
         } else {
-            console.log(data);
             return data;
         }
     };

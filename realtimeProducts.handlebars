@@ -56,13 +56,13 @@
         const thumbnail = document.getElementById('thumbnail').value;
 
         const product = {
-            title, description, code, price, stock, category, thumbnail,
+            title, description, code, price, stock, category, thumbnail, operation: 'add',
         };
 
-        socket.emit('new-product', product);
+        socket.emit('operation', product);
     }
 
-    socket.on('reload-table', products =>{
+    socket.on('reload-table', products => {
         const tbody = document.getElementById('tbody');
 
         let html = '';
@@ -77,3 +77,4 @@
     });
 
 </script>
+
