@@ -9,7 +9,7 @@ import viewsRouter from './src/routes/views.router.js'
 import ProductManager from './src/manager/product.manager.js'
 
 // SERVER INIT CONFIG
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 const app = express();
 
 // MIDDLEWARES CONFIG
@@ -26,7 +26,9 @@ app.use('/', viewsRouter);
 
 
 // SOCKET IO
-const httpServer = app.listen(8080, () => console.log('Listening on port 8080...'));
+const httpServer = app.listen(PORT, () =>
+  console.log("Listening on port 8080...")
+);
 const io = new Server(httpServer);
 
 

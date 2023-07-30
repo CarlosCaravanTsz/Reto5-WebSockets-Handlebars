@@ -15,9 +15,22 @@ export default class CartManager extends FileManager {
     };
 
     getCarts = async () => {
-        let carts = fs.existsSync(this.path) ? JSON.parse(await fs.promises.readFile(this.path, { encoding: this.format })) : [];
-        return carts;
-    }
+
+        if (fs.existsSync(this.path)) {
+            const carts = await fs.promises.readFile(this.path, { encoding: this.format });
+            if (carts) {
+                const carritos = JSON.parse(carts);
+                return carritos;
+            } else {
+                return [];
+            }
+        } else {
+            fs.promises.writeFile(this.path, JSON.stringify([]));
+            return [];
+        }
+
+    };
+
 
     set = async (cart) => {
 

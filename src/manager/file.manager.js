@@ -9,21 +9,33 @@ class FileManager {
     };
 
 
-    get = async (limit) => {
-        let data = fs.existsSync(this.path) ? JSON.parse(await fs.promises.readFile(this.path, { encoding: this.format })) : [];
-        let l = data.length;
+get = async (limit) => {
 
-        if (l > 0) {
-            data = data.filter((p) => p.status == true);
-        }
+        if (fs.existsSync(this.path)) {
 
-        console.log(data);
+            let data = await fs.promises.readFile(this.path, { encoding: this.format });
+            if (data) {
+                data = JSON.parse(data);
+                let l = data.length;
+                if (l > 0) {
+                    data = data.filter((p) => p.status == true);
+                }
 
-        if (limit){
-            const elements = l > limit ? data.slice(0, limit) : data;
-            return elements;
+                if (limit) {
+                    const elements = l > limit ? data.slice(0, limit) : data;
+                    console.log(elements);
+                    return elements;
+                    } else {
+                    console.log(data);
+                    return data;
+                }
+
+            } else {
+                return [];
+            }
         } else {
-            return data;
+            fs.promises.writeFile(this.path, JSON.stringify([]));
+            return [];
         }
     };
 
