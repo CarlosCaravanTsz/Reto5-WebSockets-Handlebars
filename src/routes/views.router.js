@@ -19,7 +19,7 @@ router.get('/products', async (req, res) => {
 // Edit Product Catalog OK
 router.get('/edit-products', async (req, res) => {
     const products = await productManager.get();
-    res.render('edit_products', { products })
+    res.render("realtimeProducts", { products });
 });
 
 // ADD PRODUCT
